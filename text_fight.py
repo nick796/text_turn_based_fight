@@ -102,4 +102,4 @@ for enemy in enemies:
 if player.is_alive():
     print("You defeated all the enemies")
 else:
-    print("Try next time")
+    print("Try next time ")
