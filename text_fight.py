@@ -2,24 +2,34 @@
 # Add potion action - heal ✅
 # Add critical hit chance and damage ✅
 # Add dodge chance ✅
+# Add level up - Exp - Upgrade stats✅
 # Add names and create boss
 # Add spells
 # Add thorn defend action
-# Add level up - Exp - Upgrade stats
 # Save and load player stats ---
 # Add turns taken and enemies defeated
 # Inheritance
 import random
+#  ============================== Player Class ==============================
+# ===========================================================================
 class Player:
     #   Constructor
     def __init__(self,name):
+        # Base stats
         self.name = name
         self.health = 10
         self.damage = 3 # for random
         self.armor = 0
+        # For heal
         self.number_potions = 5
+        # For special effects
         self.critical_chance = 0.2
         self.dodge = 0.2
+        # for level
+        self.level = 1
+        self.current_experience = 0
+        self.max_experience = 1
+
     #    Methods
     def attack(self,enemy):
         print("======== Player Action ===========")
@@ -41,6 +51,7 @@ class Player:
             real_damage = 0
         self.health -= real_damage
         print(f"{self.name} got hit for {real_damage} damage!\n")
+
     # Heal-Potion function
     def use_potion(self):
         self.health += 5
@@ -48,7 +59,16 @@ class Player:
             self.health = 10
         print("======== Player Action ===========")
         print(f"You healed for 5")
+    def level_up(self):
+        self.level +=1
+        self.max_experience *=2
+        self.current_experience = 0
 
+        self.health = self.level*10
+        self.damage = self.damage + 1
+        self.armor +=1
+
+        self.number_potions +=1
     def is_alive(self):
         if self.health < 0:
             return False
@@ -58,13 +78,15 @@ class Player:
     def show_stats(self):
         print(f"name:{self.name}\nhealth:{self.health}\ndamage:{self.damage}\narmor:{self.armor}")
 
-
+#  ============================== Enemy Class ==============================
+# ===========================================================================
 class Enemy:
     #   Constructor
-    def __init__(self,health,damage,armor):
+    def __init__(self,health,damage,armor,experience):
         self.health = health
         self.damage = damage
         self.armor = armor
+        self.experience = experience
     #   Methods
     def attack(self, player):
         hit = random.randint(1, self.damage)
@@ -78,6 +100,7 @@ class Enemy:
             real_damage = 0
         self.health -= real_damage
         print(f"Enemy got hit for {real_damage} damage!\n")
+
     def is_alive(self):
         return self.health > 0
 
@@ -85,9 +108,9 @@ class Enemy:
         print(f"name:Enemy\nhealth:{self.health}\ndamage:{self.damage}\narmor:{self.armor}")
 
 enemies = [
-    Enemy(2,2,0),
-    Enemy(5,3,1),
-    Enemy(10,4,2)
+    Enemy(2,2,0,2),
+    Enemy(5,3,1,10),
+    Enemy(10,4,2,20)
 ]
 # ======================== Main Game ========================
 player_name = input("Enter your name: ")
@@ -112,6 +135,12 @@ for enemy in enemies:
             player.attack(enemy)
             if not enemy.is_alive():
                 print("Enemy defeated!")
+                print("You gain 1 experience")
+                # Level Up Chance
+                player.current_experience += enemy.experience
+                if player.current_experience >= player.max_experience:
+                    print("You leveled Up! Stats got stronger")
+                    player.level_up()
                 break
 
             # Enemy turn
