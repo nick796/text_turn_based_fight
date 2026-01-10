@@ -1,7 +1,7 @@
 # TODO
-# Add potion action - heal
-# Add critical hit chance and damage
-# Add dodge chance
+# Add potion action - heal ✅
+# Add critical hit chance and damage ✅
+# Add dodge chance ✅
 # Add names and create boss
 # Add spells
 # Add thorn defend action
@@ -17,18 +17,38 @@ class Player:
         self.health = 10
         self.damage = 3 # for random
         self.armor = 0
+        self.number_potions = 5
+        self.critical_chance = 0.2
+        self.dodge = 0.2
     #    Methods
     def attack(self,enemy):
-        hit_damage_value = random.randint(1,self.damage)
         print("======== Player Action ===========")
+        hit_damage_value = random.randint(1,self.damage)
+        # Critical Hit
+        if random.random()< self.critical_chance:
+            hit_damage_value *=2
+            print(f"{self.name} did a critical hit")
         print(f"{self.name} attack Enemy for {hit_damage_value} damage!")
         enemy.got_hit(hit_damage_value)
+
     def got_hit(self,damage):
+        # Dodge chance
+        if random.random()<self.dodge:
+            print(f"{self.name} dodged the attack")
+            return
         real_damage = damage - self.armor
         if real_damage < 0:
             real_damage = 0
         self.health -= real_damage
         print(f"{self.name} got hit for {real_damage} damage!\n")
+    # Heal-Potion function
+    def use_potion(self):
+        self.health += 5
+        if self.health>10:
+            self.health = 10
+        print("======== Player Action ===========")
+        print(f"You healed for 5")
+
     def is_alive(self):
         if self.health < 0:
             return False
@@ -78,25 +98,41 @@ for enemy in enemies:
     enemy.show_stats()
     while player.is_alive() and enemy.is_alive():
         # Player turn
-        choice = input("Attack or scan enemy? (a/s)").lower().strip()
+        choice = input("Attack,scan enemy,or heal? (a/s,h)").lower().strip()
+
+        # ====== Scan Option ======
         if choice == 's':
             print("=== Your Stats ===")
             player.show_stats()
             print("=== Enemy Stats ===")
             enemy.show_stats()
             continue
+        # ====== Attack Option ======
+        elif choice == 'a':
+            player.attack(enemy)
+            if not enemy.is_alive():
+                print("Enemy defeated!")
+                break
 
-        player.attack(enemy)
-        if not enemy.is_alive():
-            print("Enemy defeated!")
-            break
+            # Enemy turn
+            enemy.attack(player)
+            if not player.is_alive():
+                print("Game over")
+                break
+        # ====== Heal Option ======
+        elif choice == 'h':
+            if player.number_potions>0:
+                player.use_potion()
 
-        # Enemy turn
-        enemy.attack(player)
-        if not player.is_alive():
-            print("Game over")
-            break
+                # Enemy turn
+                enemy.attack(player)
+                if not player.is_alive():
+                    print("Game over")
+                    break
 
+            else:
+                print(f"You dont have any potions left")
+                continue
     if not player.is_alive():
         break
 if player.is_alive():
