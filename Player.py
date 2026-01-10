@@ -19,6 +19,7 @@ class Player:
         self.current_experience = 0
         self.max_experience = 1
 
+        self.coins = 0
     #    Methods
     def attack(self,enemy):
         print("======== Player Action ===========")

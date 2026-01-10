@@ -13,7 +13,7 @@
 import random
 from Player import Player
 from Enemy import Enemy
-
+from Shop import Shop
 enemies = [
     Enemy(2,2,0,2),
     Enemy(5,3,1,10),
@@ -22,9 +22,39 @@ enemies = [
 # ======================== Main Game ========================
 player_name = input("Enter your name: ")
 player = Player(player_name)
+
+game_shop = Shop()
 # Game Rounds
 game_round = 1
 for enemy in enemies:
+    # Every 2 rounds you get A shop Level
+    if game_round%2==0:
+        while True:
+            print(f"==== Shop Level ===")
+            game_shop.show_items()
+            shop_choice = int(input("Give a Choice you want to buy: "))
+            match shop_choice:
+                case 1:
+                    game_shop.wood_sword_number -= 1
+                    player.damage +=2
+                    print("You bought one wood sword. Your damage +2!")
+                case 2:
+                    game_shop.stone_sword_number -= 1
+                    player.damage +=4
+                    print("You bought one stone sword. Your damage +4!")
+                case 3:
+                    game_shop.wood_armor_set_number -=1
+                    player.armor += 1
+                    print("You bought one wood armor set. Your armor +1!")
+                case 4:
+                    game_shop.stone_armor_set_number -=1
+                    player.armor += 2
+                    print("You bought one stone armor set. Your armor +2!")
+                case 5:
+                    game_shop.heal_potions_number -= 1
+                    player.number_potions += 5
+                    print("You bought x5 heal potions.")
+            break
     print(f"========== New Enemy Appears! ==========")
     enemy.show_stats()
     while player.is_alive() and enemy.is_alive():

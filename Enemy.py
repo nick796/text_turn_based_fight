@@ -8,6 +8,7 @@ class Enemy:
         self.damage = damage
         self.armor = armor
         self.experience = experience
+        # self.coins = coins
     #   Methods
     def attack(self, player):
         hit = random.randint(1, self.damage)
