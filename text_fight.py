@@ -6,11 +6,13 @@
 # Add shop
 # Add names and create boss
 # Add spells
-# Add thorn defend action
+# Add thorn defend action ✅
 # Save and load player stats ---
 # Add turns taken and enemies defeated
 # Inheritance
 import random
+import time
+
 from Player import Player
 from Enemy import Enemy
 from Shop import Shop
@@ -59,9 +61,8 @@ for enemy in enemies:
     enemy.show_stats()
     while player.is_alive() and enemy.is_alive():
         # Player turn
-
         print(f"Round:{game_round}")
-        choice = input("Attack,scan enemy,or heal? (a/s,h)").lower().strip()
+        choice = input("Attack,scan enemy,heal or defend? (a/s/h/d)").lower().strip()
 
         # ====== Scan Option ======
         if choice == 's':
@@ -105,6 +106,14 @@ for enemy in enemies:
             else:
                 print(f"You dont have any potions left")
                 continue
+        elif choice == 'd':
+            player.defend(enemy,enemy.damage)
+        elif choice == 'p':
+            player.player_spellbook.heal_fountain(player)
+
+
+    if not enemy.is_alive():
+        print(f"You kill the enemy!")
     if not player.is_alive():
         break
 if player.is_alive():

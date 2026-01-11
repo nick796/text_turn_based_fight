@@ -1,4 +1,5 @@
 import random
+import time
 #  ============================== Enemy Class ==============================
 # ===========================================================================
 class Enemy:
@@ -22,6 +23,7 @@ class Enemy:
             real_damage = 0
         self.health -= real_damage
         print(f"Enemy got hit for {real_damage} damage!\n")
+
 
     def is_alive(self):
         return self.health > 0

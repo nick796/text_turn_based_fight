@@ -1,6 +1,8 @@
 #  ============================== Player Class ==============================
 # ===========================================================================
 import random
+import time
+from Spellbook import *
 class Player:
     #   Constructor
     def __init__(self,name):
@@ -19,7 +21,9 @@ class Player:
         self.current_experience = 0
         self.max_experience = 1
 
+        self.player_spellbook = Spellbook()
         self.coins = 0
+
     #    Methods
     def attack(self,enemy):
         print("======== Player Action ===========")
@@ -28,19 +32,30 @@ class Player:
         if random.random()< self.critical_chance:
             hit_damage_value *=2
             print(f"{self.name} did a critical hit")
+
         print(f"{self.name} attack Enemy for {hit_damage_value} damage!")
+
         enemy.got_hit(hit_damage_value)
+
+    def defend(self,enemy,damage_enemy):
+        damage_reflect = damage_enemy//2
+        print(f"You reflect {damage_reflect} damage to the enemy! ")
+        enemy.got_hit(damage_reflect)
+        self.got_hit(damage_reflect)
+
 
     def got_hit(self,damage):
         # Dodge chance
         if random.random()<self.dodge:
             print(f"{self.name} dodged the attack")
+
             return
         real_damage = damage - self.armor
         if real_damage < 0:
             real_damage = 0
         self.health -= real_damage
         print(f"{self.name} got hit for {real_damage} damage!\n")
+
 
     # Heal-Potion function
     def use_potion(self):
@@ -49,6 +64,7 @@ class Player:
             self.health = 10
         print("======== Player Action ===========")
         print(f"You healed for 5")
+
     def level_up(self):
         self.level +=1
         self.max_experience *=2
