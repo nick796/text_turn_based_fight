@@ -21,5 +21,3 @@ class Shop:
         print(f"5) Health_Potions(x5): {self.heal_potions_number}\nCost: {self.heal_potions_cost}")
 
 
-# s = Shop()
-# s.show_items()

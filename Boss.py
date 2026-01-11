@@ -1,8 +1,7 @@
 import random
-import time
-#  ============================== Enemy Class ==============================
+#  ============================== Boss Class ==============================
 # ===========================================================================
-class Enemy:
+class Boss:
     #   Constructor
     def __init__(self,health,damage,armor,experience,coins):
         self.health = health
@@ -15,6 +14,12 @@ class Enemy:
         hit = random.randint(1, self.damage)
         print("======== Enemy Action ===========")
         print(f"Enemy attacks {player.name} for {hit}!")
+        player.got_hit(hit)
+
+    def fireball(self,player):
+        hit = random.randint(3, 8)
+        print("======== Enemy Action ===========")
+        print(f"Enemy use fireball and strike {player.name} for {hit}!")
         player.got_hit(hit)
 
     def got_hit(self,damage):
