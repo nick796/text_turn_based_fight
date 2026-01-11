@@ -3,9 +3,9 @@
 # Add critical hit chance and damage ✅
 # Add dodge chance ✅
 # Add level up - Exp - Upgrade stats✅
-# Add shop
+# Add shop ✅
 # Add names and create boss
-# Add spells
+# Add spells ✅
 # Add thorn defend action ✅
 # Save and load player stats ---
 # Add turns taken and enemies defeated
@@ -29,6 +29,7 @@ game_shop = Shop()
 # Game Rounds
 game_round = 1
 for enemy in enemies:
+
     # Every 2 rounds you get A shop Level
     if game_round%2==0:
         while True:
@@ -62,7 +63,7 @@ for enemy in enemies:
     while player.is_alive() and enemy.is_alive():
         # Player turn
         print(f"Round:{game_round}")
-        choice = input("Attack,scan enemy,heal or defend? (a/s/h/d)").lower().strip()
+        choice = input("Attack,scan enemy,heal or defend? (a/s/h/d)\nWrite sp for spellbook: ").lower().strip()
 
         # ====== Scan Option ======
         if choice == 's':
@@ -82,18 +83,18 @@ for enemy in enemies:
                 if player.current_experience >= player.max_experience:
                     print("You leveled Up! Stats got stronger")
                     player.level_up()
-                game_round +=1
+
                 break
 
             # Enemy turn
             enemy.attack(player)
-            game_round += 1
+
             if not player.is_alive():
                 print("Game over")
                 break
         # ====== Heal Option ======
         elif choice == 'h':
-            game_round += 1
+
             if player.number_potions>0:
                 player.use_potion()
 
@@ -108,10 +109,10 @@ for enemy in enemies:
                 continue
         elif choice == 'd':
             player.defend(enemy,enemy.damage)
-        elif choice == 'p':
-            player.player_spellbook.heal_fountain(player)
+        elif choice == 'sp':
+            player.player_spellbook.show_spell_stats(enemy,player)
 
-
+        game_round += 1
     if not enemy.is_alive():
         print(f"You kill the enemy!")
     if not player.is_alive():
