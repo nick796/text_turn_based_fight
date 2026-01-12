@@ -76,7 +76,7 @@ class Player:
 
         self.number_potions +=1
     def is_alive(self):
-        if self.health < 0:
+        if self.health <= 0:
             return False
         else:
             return True

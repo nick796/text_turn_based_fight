@@ -19,6 +19,8 @@ from Shop import Shop
 from Boss import Boss
 enemies = [
     Enemy(2,2,0,2,10),
+    Enemy(2, 2, 0, 2, 10),
+    Enemy(2, 2, 0, 2, 10),
     Enemy(5,3,1,10,20),
     Boss(5,3,1,10,20),
     Enemy(10,4,2,20,30)
@@ -103,6 +105,9 @@ for enemy in enemies:
                     player.level_up()
             else:
                 # Enemy turn
+                if isinstance(enemy,Boss):
+                    if random.random()<0.9:
+                        enemy.fireball(player)
                 enemy.attack(player)
 
             if not player.is_alive():
